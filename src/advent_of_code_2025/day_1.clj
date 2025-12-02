@@ -33,14 +33,14 @@
     \R {:position (mod (+ position distance) 100)
         :zeroes   (+ zeroes (quot (+ distance position) 100))}
 
-    \L {:position (mod (- position distance) 100)
-        :zeroes   (+ zeroes
-                     (cond
-                       (zero? position)             (quot distance 100)
-                       (<= (- position distance) 0) (inc (quot (- distance position) 100))
-                       :else                        0))}))
+    \L (let [crossed-zero? (and (> position 0) (<= (- position distance) 0))]
+         {:position (mod (- position distance) 100)
+          :zeroes   (+ zeroes
+                       (quot (- distance position) 100)
+                       (if crossed-zero? 1 0))})))
 
 (defn solution-part-two [input]
   (->> (parse-input input)
        (reduce count-zeroes-passed {:position 50 :zeroes 0})
        (:zeroes)))
+
