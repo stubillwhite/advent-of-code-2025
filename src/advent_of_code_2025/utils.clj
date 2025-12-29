@@ -12,3 +12,6 @@
 (defmacro defmethod-
   [name & decls]
   (list* `defmethod (vary-meta name assoc :private true) decls))
+
+(defn sum [xs]
+  (apply + xs))
